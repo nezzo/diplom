@@ -1,0 +1,86 @@
+form.form_student,.form_admin  {
+    margin: 5%;
+}
+.form_student h2,.form_admin h2 {
+    text-align: center;
+}
+.name_input,.login_input {
+    padding-bottom: 1%;
+}
+.last_name_input {
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+.number_group_input,.pass_input {
+    padding-top: 1%;
+    padding-bottom: 5%;
+}
+.admin {
+    float: right;
+}
+.student {
+    border: 3px solid blue;
+    width: 30%;
+    padding: 1%;
+    margin-top: 3%;
+}
+.admin {
+    float: right;
+    border: 3px solid blue;
+    margin-top: 3%;
+    padding: 5px;
+}
+.test_mysql {
+    position: relative;
+    top: 100px;
+    border: 3px solid grey;
+    border-radius: 8px;
+}
+.test_mysql h3 {
+    text-align: center;
+}
+.student h4 {
+    text-align: center;
+    font-weight: bold;
+}
+.n_s,.l_s,.g_s{
+    display: inline-block;
+}
+.error{
+    color: red;
+}
+.admin_tools {
+    margin-top: 1%;
+    border: 3px solid black;
+    border-radius: 10px;
+}
+.admin_tools table {
+    width: 100%;
+}
+
+.admin_tools TD, TH {
+    padding: 3px; /* Поля вокруг содержимого таблицы */
+    border: 1px solid black; /* Параметры рамки */
+}
+.admin_tools TH {
+    background: #b0e0e6; /* Цвет фона */
+}
+
+.various_button_new_post {
+    border: 1px solid black;
+    padding: 4px;
+    margin: 5px;
+    background-color: #b0e0e6;
+    color: green;
+}
+.button_del_post{
+    border: 1px solid black;
+    padding: 4px;
+    margin: 5px;
+    background-color: #b0e0e6;
+    color: green;
+}
+.buttons {
+    bottom: 10px;
+    position: relative;
+}
