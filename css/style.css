@@ -66,20 +66,14 @@ form.form_student,.form_admin  {
     background: #b0e0e6; /* Цвет фона */
 }
 
-.various_button_new_post {
+.various_button_new_post,.button_del_post,.various_button_post_update {
     border: 1px solid black;
     padding: 4px;
     margin: 5px;
     background-color: #b0e0e6;
     color: green;
 }
-.button_del_post{
-    border: 1px solid black;
-    padding: 4px;
-    margin: 5px;
-    background-color: #b0e0e6;
-    color: green;
-}
+
 .buttons {
     bottom: 10px;
     position: relative;

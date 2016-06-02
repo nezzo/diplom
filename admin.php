@@ -41,6 +41,7 @@ echo "
                                     <div class='question_answer'>
                                     <div class='buttons'>
                                     <a href='modal_new_post.php' class='various_button_new_post fancybox.ajax'>+Добавить</a>
+                                    <a href='modal_update_post.php' class='various_button_post_update fancybox.ajax'>~Редактировать</a>
                                     <a href='#' class='button_del_post'>-Удалить</a>
                                     </div>
                                     <form class='form_question' action='connect_bd.php' name='table' method='POST'>
@@ -52,8 +53,7 @@ echo "
                                     ";?>
                                     <?php
                                     foreach ($question as $row) {
-                                        echo "
-                                    <tr>
+                                        echo "<tr id='tr_$row[id]'>
                                     <center><td>$row[id]</td></center><td>$row[question]</td><td>$row[variant_1]</td><td>$row[variant_2]</td><td>$row[answer]</td><td><center>$row[point]</center></td>
                                     <td><center><input type='checkbox' name='check[]' value='$row[id]'></center></td>
                                     </tr>";

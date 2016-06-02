@@ -24,7 +24,7 @@ $(document).ready(function() {
         openEffect	: 'none',
         closeEffect	: 'none'
     });
-    $(".various_button_new_post").fancybox({
+    $(".various_button_new_post, .various_button_post_update").fancybox({
         maxWidth	: 900,
         maxHeight	: 400,
         fitToView	: false,
@@ -73,7 +73,7 @@ $(document).ready(function() {
         */
 
     });
-
+    /*Валидация полей для входа в админку*/
     $('.button_admin').click(function() {
 
         $(".form_admin").validate({
@@ -112,8 +112,8 @@ $(document).ready(function() {
         });
 
     });
-        /*НАДО доработать что бы можно было удалять  несколько штук сразу и нужно разобраться как перезагружать блок элементов*/
-        $(".button_del_post").on("click", function(e) {
+        /*Удаляем не нужные строки в таблице*/
+        $(".button_del_post").click(function(e) {
              e.preventDefault();
             var id = $( "input:checked" ).val();
 
@@ -123,9 +123,7 @@ $(document).ready(function() {
                 dataType:'text',
                 data :{id:id},
                 success:function(data){
-                        console.log(data);
-                 //  $('.form_question').load('admin.php');
-
+                    $("#tr_"+id).remove();
                 },
                 error:function (xhr, ajaxOptions, thrownError){
                     alert(thrownError); //выводим ошибку
@@ -134,8 +132,10 @@ $(document).ready(function() {
 
         });
 
+
         /*Добавляем  новый вопрос-ответ в базу*/
-        $('.new_post_button').click(function(){
+        $('.new_post_button').click(function(e) {
+            e.preventDefault();
             var question = $('.new_post_question').val();
             var variant_1 = $('.new_post_variant_1').val();
             var variant_2 = $('.new_post_variant_2').val();
@@ -154,16 +154,83 @@ $(document).ready(function() {
                       },
                 success:function(data){
 
-                    //  $('.form_question').load('admin.php');
 
+                    $('.form_question table').append('<tr id=tr_'+data+'><td>'+data+'</td><td>'+question+'</td><td>'+variant_1+'</td>' +
+                                                        '<td>'+variant_2+'</td><td>'+answer+'</td><td><center>'+point+'</center></td>' +
+                                                        '<td><center><input type="checkbox" name="[check[]" value='+data+'></center></td></tr>'
+                                                    );
+                        $.fancybox.close();
+                     },
+                error:function (xhr, ajaxOptions, thrownError){
+                    alert(thrownError); //выводим ошибку
+                }
+            });
+        });
+
+
+        /*Выводим в поля нужную запись для редактирования*/
+        $('.various_button_post_update').click(function(e){
+            e.preventDefault();
+            var id = $( "input:checked" ).val();
+            $.ajax({
+                url : 'connect_bd.php',
+                type : 'POST',
+                dataType:'json',
+                data :{id_select:id},
+                success:function(data){
+                    setTimeout(function() {
+                        $('.update_post_question').val(data.question);
+                        $('.update_post_variant_1').val(data.variant_1);
+                        $('.update_post_variant_2').val(data.variant_2);
+                        $('.update_post_answer').val(data.answer);
+                        $('.update_post_point').val(data.point);
+
+                        }, 100);
                 },
                 error:function (xhr, ajaxOptions, thrownError){
                     alert(thrownError); //выводим ошибку
                 }
             });
 
+        });
+
+        /*Редактируем  строку и отправляем назад в базу для обновления строки*/
+        $('.update_post_button').click(function(e) {
+            e.preventDefault();
+            var question = $('.update_post_question').val();
+            var variant_1 = $('.update_post_variant_1').val();
+            var variant_2 = $('.update_post_variant_2').val();
+            var answer = $('.update_post_answer').val();
+            var point = $('.update_post_point').val();
+            var id = $( "input:checked" ).val();
+
+            $.ajax({
+                url : 'connect_bd.php',
+                type : 'POST',
+                dataType:'text',
+                data :{question_update:question,
+                    variant_1_update:variant_1,
+                    variant_2_update:variant_2,
+                    answer_update:answer,
+                    point_update:point,
+                    id_update:id
+                },
+                success:function(data){
+
+                    /*Разобраться как заменить после редактирования*/
+                    $('.form_question table tr[tr_=' + id + ']').replaceWith('<tr id=tr_'+id+'><td>'+id+'</td><td>'+question+'</td><td>'+variant_1+'</td>' +
+                        '<td>'+variant_2+'</td><td>'+answer+'</td><td><center>'+point+'</center></td>' +
+                        '<td><center><input type="checkbox" name="[check[]" value='+data+'></center></td></tr>'
+                    );
+                    $.fancybox.close();
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                    alert(thrownError); //выводим ошибку
+                }
+            });
 
         });
+
 
 
 
