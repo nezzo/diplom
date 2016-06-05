@@ -11,12 +11,13 @@ form.form_student,.form_admin  {
     padding-top: 1%;
     padding-bottom: 1%;
 }
-.number_group_input,.pass_input {
+.number_group_input{
     padding-top: 1%;
     padding-bottom: 5%;
 }
-.admin {
-    float: right;
+.pass_input {
+    margin-top: 5%;
+    margin-bottom: 2%;
 }
 .student {
     border: 3px solid blue;
@@ -26,9 +27,12 @@ form.form_student,.form_admin  {
 }
 .admin {
     float: right;
-    border: 3px solid blue;
+    border: 1px solid black;
     margin-top: 3%;
     padding: 5px;
+    background-color: #b0e0e6;
+    color: green;
+
 }
 .test_mysql {
     position: relative;
@@ -66,7 +70,7 @@ form.form_student,.form_admin  {
     background: #b0e0e6; /* Цвет фона */
 }
 
-.various_button_new_post,.button_del_post,.various_button_post_update {
+.various_button_new_post,.button_del_post,.various_button_post_select {
     border: 1px solid black;
     padding: 4px;
     margin: 5px;
@@ -77,4 +81,9 @@ form.form_student,.form_admin  {
 .buttons {
     bottom: 10px;
     position: relative;
+}
+.wrong_password{
+    display:none;
+    color:red;
+    font-size:18px;
 }

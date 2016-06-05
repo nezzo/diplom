@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jQuizler.css">
     <link rel="stylesheet" href="css/fancybox.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -54,6 +55,7 @@
 </main>
 <footer>
     <script src="js/jquery.min.js"></script>
+    <script src="js/jQuizler.js"></script>
     <script src="js/jquery.validate.min.js"></script>
     <script src="js/fancybox.js"></script>
     <script src="js/main.js"></script>

@@ -98,13 +98,13 @@ class Model {
             //Установка fetch mode
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $rows = $stmt->fetchAll();
-          //  var_dump($rows);
 
             foreach ($rows as $row) {
-               echo json_encode($row);
+                echo json_encode($row);
 
             }
         }
+        return true;
     }
 
     function post_update(){
@@ -115,27 +115,40 @@ class Model {
         $point = $_POST['point_update'];
         $id = $_POST['id_update'];
 
-        /*
-        var_dump($question);
-        var_dump($variant_1);
-        var_dump($variant_2);
-        var_dump($answer);
-        var_dump($point);
-        */
-
-
         if (isset($id) && !empty($id) && isset($question) && isset($variant_1) && isset($variant_2) && isset($answer) && isset($point) &&
             !empty($question) && !empty($variant_1) && !empty($variant_2) && !empty($answer) && !empty($point)) {
-                $stmt_update = self::$_db->prepare("UPDATE question set question = :question, variant_1 = :variant_1,  variant_2 = :variant_2,
+                $stmt_update = self::$_db->prepare("UPDATE question set id = :id, question = :question, variant_1 = :variant_1,  variant_2 = :variant_2,
                                                    answer = :answer, point = :point  where id ='$id'");
                 $stmt_update->bindParam(':question', $question);
                 $stmt_update->bindParam(':variant_1', $variant_1);
                 $stmt_update->bindParam(':variant_2', $variant_2);
                 $stmt_update->bindParam(':answer', $answer);
                 $stmt_update->bindParam(':point', $point);
+                $stmt_update->bindParam(':id', $id);
                 $stmt_update->execute();
         }
         return true;
+
+    }
+
+    function admin($login,$pass){
+        $stmt = self::$_db->query("SELECT * from admin");
+
+        //Установка fetch mode
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+        $rows = (array) $stmt->fetchAll();
+
+        foreach($rows as $row){
+            if ($row['login']==$login && $row['pass']==$pass){
+                echo "ok";
+            }else{
+                echo "fail";
+            }
+        }
+
+        return true;
+
     }
 
 }
