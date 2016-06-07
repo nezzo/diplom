@@ -3,9 +3,9 @@
 <link rel="stylesheet" href="css/tabs_style.css">
 <link rel="stylesheet" href="css/style.css">
 <?php session_start();
-require_once('connect_bd.php');
-$student= (array) $a->result_student();
-$question= (array) $a->question();
+require_once('model.php');
+$student= (array) $model->result_student();
+$question= (array) $model->question();
 $exit = $_POST['exit'];
 
 if($_SESSION['admin'] !="ok")
@@ -67,7 +67,6 @@ if ($exit=="exit"){
                                          <th>Первый вариант ответа</th>
                                          <th>Второй вариант ответа</th>
                                          <th>Правильный ответ</th>
-                                         <th>Балл за правильный ответ</th>
                                          <th>Выделить</th>
                                          </thead>
                                          <tbody>
@@ -79,7 +78,6 @@ if ($exit=="exit"){
                                                  <td><?=$row['variant_1'];?></td>
                                                  <td><?=$row['variant_2'];?></td>
                                                  <td><?=$row['answer'];?></td>
-                                                 <td><center><?=$row['point'];?></center></td>
                                                  <td><center><input type='checkbox' name='check[]' value='<?=$row['id'];?>'></center></td>
                                              </tr>
                                          <?php endforeach;?>
@@ -90,7 +88,9 @@ if ($exit=="exit"){
                                     </div>
 
                                 <div>
-                                    <div class='exit'></div>
+                                    <div class='exit'>
+
+                                    </div>
 
                                 </div>
                             </div>

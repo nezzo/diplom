@@ -1,4 +1,9 @@
 <?php
+/*
+ini_set('display_errors',1);
+error_reporting(E_ALL ^E_NOTICE);
+*/
+
 
 class Model {
 
@@ -37,7 +42,9 @@ class Model {
 
      }
 
+    /*Вывод в админке вопросов*/
     function question(){
+        $enter = $_POST['enter'];
         $stmt = self::$_db->query('SELECT * from question');
         //Установка fetch mode
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -68,19 +75,18 @@ class Model {
         $variant_1 = $_POST['variant_1'];
         $variant_2 = $_POST['variant_2'];
         $answer = $_POST['answer'];
-        $point = $_POST['point'];
 
 
-        if (isset($question)&& isset($variant_1)&& isset($variant_2)&& isset($answer)&& isset($point)&&
-            !empty($question)&& !empty($variant_1)&& !empty($variant_2)&& !empty($answer)&& !empty($point)){
+        if (isset($question)&& isset($variant_1)&& isset($variant_2)&& isset($answer)
+            && !empty($question)&& !empty($variant_1)&& !empty($variant_2)&& !empty($answer)){
 
-            $stmt = self::$_db->prepare("INSERT INTO question (question, variant_1, variant_2,answer,point)
-                                        VALUES (:question, :variant_1, :variant_2, :answer,:point)");
+            $stmt = self::$_db->prepare("INSERT INTO question (question, variant_1, variant_2, answer)
+                                        VALUES (:question, :variant_1, :variant_2, :answer)");
+
             $stmt->bindParam(':question', $question);
             $stmt->bindParam(':variant_1', $variant_1);
             $stmt->bindParam(':variant_2', $variant_2);
             $stmt->bindParam(':answer', $answer);
-            $stmt->bindParam(':point', $point);
             $stmt->execute();
             $lastid = self::$_db->lastInsertId();
 
@@ -112,18 +118,16 @@ class Model {
         $variant_1 = $_POST['variant_1_update'];
         $variant_2 = $_POST['variant_2_update'];
         $answer = $_POST['answer_update'];
-        $point = $_POST['point_update'];
         $id = $_POST['id_update'];
 
-        if (isset($id) && !empty($id) && isset($question) && isset($variant_1) && isset($variant_2) && isset($answer) && isset($point) &&
-            !empty($question) && !empty($variant_1) && !empty($variant_2) && !empty($answer) && !empty($point)) {
+        if (isset($id) && !empty($id) && isset($question) && isset($variant_1) && isset($variant_2) && isset($answer)&&
+            !empty($question) && !empty($variant_1) && !empty($variant_2) && !empty($answer)) {
                 $stmt_update = self::$_db->prepare("UPDATE question set id = :id, question = :question, variant_1 = :variant_1,  variant_2 = :variant_2,
-                                                   answer = :answer, point = :point  where id ='$id'");
+                                                   answer = :answer   where id ='$id'");
                 $stmt_update->bindParam(':question', $question);
                 $stmt_update->bindParam(':variant_1', $variant_1);
                 $stmt_update->bindParam(':variant_2', $variant_2);
                 $stmt_update->bindParam(':answer', $answer);
-                $stmt_update->bindParam(':point', $point);
                 $stmt_update->bindParam(':id', $id);
                 $stmt_update->execute();
         }
@@ -151,9 +155,62 @@ class Model {
 
     }
 
+    /* Вывод оценки студента за тест*/
+    function question_student_result(){
+
+        $name = $_POST['name_result'];
+        $last_name = $_POST['last_name_result'];
+        $num_group = $_POST['num_group_result'];
+        $data_test= date("Y-m-j, H:i:s");
+        $point = $_POST['point_result'].'%';
+
+        if (isset($name) && isset($last_name) && isset($num_group) && isset($point)
+            && !empty($name) && !empty($last_name) && !empty($num_group)) {
+
+            $stmt_student_result = self::$_db->prepare("INSERT INTO student (name, last_name, num_group, data, point)
+                                        VALUES (:name, :last_name, :num_group, :data_test, :point)");
+            $stmt_student_result->bindParam(':name', $name);
+            $stmt_student_result->bindParam(':last_name', $last_name);
+            $stmt_student_result->bindParam(':num_group', $num_group);
+            $stmt_student_result->bindParam(':data_test', $data_test);
+            $stmt_student_result->bindParam(':point', $point);
+            $stmt_student_result->execute();
+            $lastid = self::$_db->lastInsertId();
+
+        }
+        return true;
+
+    }
+
+    /*Вывод вопросов на главную*/
+    function question_index(){
+        $enter = $_POST['enter'];
+        $mas = [];
+        if($enter == "ok"){
+            $stmt = self::$_db->query('SELECT * from question');
+            //Установка fetch mode
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+            $rows = (array) $stmt->fetchAll();
+
+                foreach ($rows as $row) {
+                    $mas[] = $row;
+
+                 }
+            echo json_encode($mas);
+
+        }
+        return true;
+    }
+
+
 }
-$a = new Model();
-$a->del_post();
-$a->new_post();
-$a->post_select();
-$a->post_update();
+$model = new Model();
+$model->del_post();
+$model->new_post();
+$model->post_select();
+$model->post_update();
+$model->question_index();
+$model->question_student_result();
+
+

@@ -49,10 +49,10 @@
             (function($){
                 $.shuffle = function(arr) {
                     for(
-                            var j, x, i = arr.length; i;
-                            j = parseInt(Math.random() * i),
-                                    x = arr[--i], arr[i] = arr[j], arr[j] = x
-                            );
+                        var j, x, i = arr.length; i;
+                        j = parseInt(Math.random() * i),
+                            x = arr[--i], arr[i] = arr[j], arr[j] = x
+                    );
                     return arr;
                 }
             })(jQuery);
@@ -130,7 +130,7 @@
                 $("div[id*='question-'] li").click(function(){
                     if (!reviewQuiz) {
                         /*$(this).siblings().removeClass("selected");
-                        $(this).toggleClass("selected");*/
+                         $(this).toggleClass("selected");*/
 
                         $(this).siblings().removeClass("btn-info");
                         $(this).toggleClass("btn-info");
@@ -186,10 +186,33 @@
                             }
                         });
 
-                        resultHTML += "<p style=\"margin: 14px 0px\">Вы ответили на " + Math.round(((rightAnswers * 100) / questions.length) * 100) / 100 + "% вопросов.</p>";
+
+                        resultHTML += "<div class='point'><p style=\"margin: 14px 0px\">Вы ответили на  <span>" + Math.round(((rightAnswers * 100) / questions.length) * 100) / 100 + "%</span> вопросов.</p></div>";
                         resultHTML += buttonsHTML;
                         resultHTML += "<p style=\"margin-top:25px; text-align: center\"><button class=\"btn btn-large tostart\">Просмотреть вопросы</button></p>";
 
+                        var name = $('.n_s').text();
+                        var last_name = $('.l_s').text();
+                        var num_group = $('.g_s').text();
+                        var point = Math.round(((rightAnswers * 100) / questions.length) * 100) / 100;
+
+                        $.ajax({
+                            url: 'model.php',
+                            type: 'POST',
+                            dataType: 'text',
+                            data:   {name_result:name,
+                                    last_name_result:last_name,
+                                    num_group_result:num_group,
+                                    point_result:point
+                            },
+                            success: function (data) {
+                                console.log(data);
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                console.log(thrownError); //выводим ошибку
+                            }
+
+                        });
                         div.animate({
                             opacity : '0'
                         }, 500, function(e){
@@ -337,7 +360,7 @@
                             percentage += percentPiece;
                             $(".progress div").css("width", percentage + "%");
                         });
-                     });
+                    });
                 });
             });
         }

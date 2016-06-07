@@ -36,11 +36,10 @@ $(document).ready(function() {
         closeEffect	: 'none'
     });
 
-    /*НАДО РАЗОБРАТЬСЯ КАК ВЫВОДИТЬ ВОПРОСЫ В ЦЫКЛЕ И КОЛИЧЕСТВО СКОЛЬКО В БАЗЕ СТОЛЬКО ТО И НА ГЛАВНОЙ, ЧТО БЫ АВТОМАТОМ
-    * ВЫВОДИЛОСЬ КОЛИЧЕСТВО ВОПРОСОВ И САМИ ВОПРОСЫ И ОТВЕТЫ В ЦЫКЛЕ ПОДСТАВЛЯЛИСЬ
+    /*
     * НАДО ОРГАНИЗОВАТЬ ЗАПИСЬ В БД ОЦЕНКУ СТУДЕНТА  И ЕЩЕ КРИВО РАБОТАЕТ СТИЛЬ ПО ТЕСТУ В index.html ВСЕ КРАСИВО У МЕНЯ НЕТ
     * */
-    //получаем и отправляем данные о результате в базу (функция отвечает за тестирование)
+    //получаем и отправляем данные о результате в базу (функция отвечает за тестирование) и выводим вопросы на главную
     $('.button_student').on('click', function(event) {
         event.preventDefault();
 
@@ -48,49 +47,53 @@ $(document).ready(function() {
         var name = $('.name_inputs').val();
         var last_name = $('.last_name_inputs').val();
         var number_group = $('.number_group_inputs').val();
+        var i;
 
         if (name !='' && last_name !='' && number_group !=''){
             $('.n_s').html(name);
             $('.l_s').html(last_name);
             $('.g_s').html(number_group);
             $.fancybox.close();
-            var questions = [
-                {
-                    type: "choose",
-                    question: "<h3>Вопрос 1</h3>",
-                    answers: [
-                        "Ответ 1",
-                        "Ответ 2",
-                        "Ответ 3"
-                    ],
-                    correct: [1]
-                },
-                {
-                    type: "choose",
-                    question: "<h3>Вопрос 2</h3>",
-                    answers: [
-                        "Ответ 1",
-                        "Ответ 2",
-                        "Ответ 3"
-                    ],
-                    correct: [2]
-                },
-                {
-                    type: "choose",
-                    question: "<h3>Вопрос 3</h3>",
-                    answers: [
-                        "Ответ 1",
-                        "Ответ 2",
-                        "Ответ 3"
-                    ],
-                    correct: [3]
-                }
-            ];
-             $('.test_mysql').replaceWith("<div id='jQuizler' class='main-quiz-holder'>"+
-                                         "<h3>Тест</h3><button class='btn btn-large'>Старт</button>" +
-                                            "</div>");
-            $("#jQuizler").jQuizler(questions);
 
+             /*получаем двухмерный массив*/
+            $.ajax({
+                url: 'model.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    enter: "ok"
+                },
+                success: function(data) {
+                    var questions = [];
+                    for (i = 0; i < data.length; i++) {
+                        // console.log(data[i]);
+                        questions.push({
+                            type: "choose",
+                            question: "<h3>" + data[i].question + "</h3>",
+                            answers: [
+                                "" + data[i].variant_1 + "",
+                                "" + data[i].variant_1 + "",
+                                "" + data[i].answer + ""
+                            ],
+                            correct: [3]
+                        });
+
+                      //  console.log(questions);
+
+                    }
+
+
+                    $('.test_mysql').replaceWith("<div id='jQuizler' class='main-quiz-holder'>"+
+                        "<h3>Тест</h3><button class='btn btn-large'>Старт</button>" +
+                        "</div>");
+                    $("#jQuizler").jQuizler(questions);
+
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                    console.log(thrownError); //выводим ошибку
+                }
+
+            });
         }else{
             alert("Не все поля заполнены!");
         }
@@ -152,7 +155,7 @@ $(document).ready(function() {
                 }
             },
             error:function (xhr, ajaxOptions, thrownError){
-                alert(thrownError); //выводим ошибку
+                console.log(thrownError); //выводим ошибку
             }
         });
 
@@ -165,7 +168,7 @@ $(document).ready(function() {
             var id = $( "input:checked" ).val();
 
             $.ajax({
-                url : 'connect_bd.php',
+                url : 'model.php',
                 type : 'POST',
                 dataType:'text',
                 data :{id:id},
@@ -173,7 +176,7 @@ $(document).ready(function() {
                     $("#tr_"+id).remove();
                 },
                 error:function (xhr, ajaxOptions, thrownError){
-                    alert(thrownError); //выводим ошибку
+                    console.log(thrownError); //выводим ошибку
                 }
             });
 
@@ -187,30 +190,28 @@ $(document).ready(function() {
             var variant_1 = $('.new_post_variant_1').val();
             var variant_2 = $('.new_post_variant_2').val();
             var answer = $('.new_post_answer').val();
-            var point = $('.new_post_point').val();
 
-            if( question !="" && variant_1!="" && variant_2!=""&& answer!="" && point!="" ){
+            if( question !="" && variant_1!="" && variant_2!=""&& answer!=""){
                 $.ajax({
-                    url : 'connect_bd.php',
+                    url : 'model.php',
                     type : 'POST',
                     dataType:'text',
                     data :{question:question,
                         variant_1:variant_1,
                         variant_2:variant_2,
-                        answer:answer,
-                        point:point
+                        answer:answer
                     },
                     success:function(data){
 
 
                         $('.form_question table').append('<tr id=tr_'+data+'><center><td>'+data+'</td></center><td>'+question+'</td><td>'+variant_1+'</td>' +
-                            '<td>'+variant_2+'</td><td>'+answer+'</td><td><center>'+point+'</center></td>' +
+                            '<td>'+variant_2+'</td><td>'+answer+'</td>' +
                             '<td><center><input type="checkbox" name="[check[]" value='+data+'></center></td></tr>'
                         );
                         $.fancybox.close();
                     },
                     error:function (xhr, ajaxOptions, thrownError){
-                        alert(thrownError); //выводим ошибку
+                        console.log(thrownError); //выводим ошибку
                     }
                 });
 
@@ -229,7 +230,7 @@ $(document).ready(function() {
             console.log(id);
 
                 $.ajax({
-                    url : 'connect_bd.php',
+                    url : 'model.php',
                     type : 'POST',
                     dataType:'json',
                     data :{id_select:id},
@@ -239,7 +240,6 @@ $(document).ready(function() {
                             $('.update_post_variant_1').val(data.variant_1);
                             $('.update_post_variant_2').val(data.variant_2);
                             $('.update_post_answer').val(data.answer);
-                            $('.update_post_point').val(data.point);
                         }, 100);
                     },
                     error:function (xhr, ajaxOptions, thrownError){
@@ -255,12 +255,11 @@ $(document).ready(function() {
             var variant_1 = $('.update_post_variant_1').val();
             var variant_2 = $('.update_post_variant_2').val();
             var answer = $('.update_post_answer').val();
-            var point = $('.update_post_point').val();
             var id = $("input:checked").val();
 
-            if( question !="" && variant_1!="" && variant_2!=""&& answer!="" && point!="" ) {
+            if( question !="" && variant_1!="" && variant_2!=""&& answer!="") {
                $.ajax({
-                    url: 'connect_bd.php',
+                    url: 'model.php',
                     type: 'POST',
                     dataType: 'text',
                     data: {
@@ -268,18 +267,17 @@ $(document).ready(function() {
                         variant_1_update: variant_1,
                         variant_2_update: variant_2,
                         answer_update: answer,
-                        point_update: point,
                         id_update: id
                     },
                     success: function (data) {
-                        $("#tr_" + id + "").replaceWith("<tr id=tr_" + id + "><td>" + id + "</td><td>" + question + "</td><td>" + variant_1 + "</td>" +
-                            "<td>" + variant_2 + "</td><td>" + answer + "</td><td><center>" + point + "</center></td>" +
+                        $("#tr_" + id + "").replaceWith("<tr id=tr_" + id + "><center><td>" + id + "</td></center><td>" + question + "</td><td>" + variant_1 + "</td>" +
+                            "<td>" + variant_2 + "</td><td>" + answer + "</td>" +
                             "<td><center><input type='checkbox' name='[check[]' value=" + id + "></center></td></tr>"
                         );
                         $.fancybox.close();
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
-                        alert(thrownError); //выводим ошибку
+                      console.log(thrownError); //выводим ошибку
                     }
                 });
             }else{
@@ -288,6 +286,7 @@ $(document).ready(function() {
 
         });
 
+    /*Функция по выходу с админки*/
     $('.pr').click(function(){
 
         var exit = "exit";
@@ -307,7 +306,5 @@ $(document).ready(function() {
         });
 
     });
-
-
 
 });
