@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/jQuizler.css">
     <link rel="stylesheet" href="css/fancybox.css">
     <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
 <header>
@@ -32,7 +34,8 @@
 
         <a class="various_student fancybox.ajax" href="modal_student.php">Изменить данные</a>
     </div>
-   </div>
+        </div>
+
          <div class="col-md-6">
          <div class="admin">
         <a class="various_admin fancybox.ajax" href="modal_admin.php">Вход для администратора</a>
@@ -52,6 +55,7 @@
                 </div>
         </div>
     </div>
+
 </main>
 <footer>
     <script src="js/jquery.min.js"></script>

@@ -87,3 +87,11 @@ form.form_student,.form_admin  {
     color:red;
     font-size:18px;
 }
+.student label {
+    display: inline-block;
+}
+button.button_admin {
+    top: 165px;
+    position: absolute;
+    left: 20px;
+}

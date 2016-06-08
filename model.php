@@ -4,7 +4,6 @@ ini_set('display_errors',1);
 error_reporting(E_ALL ^E_NOTICE);
 */
 
-
 class Model {
 
     private  $user = 'root';
@@ -44,7 +43,6 @@ class Model {
 
     /*Вывод в админке вопросов*/
     function question(){
-        $enter = $_POST['enter'];
         $stmt = self::$_db->query('SELECT * from question');
         //Установка fetch mode
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -74,18 +72,20 @@ class Model {
         $question = $_POST['question'];
         $variant_1 = $_POST['variant_1'];
         $variant_2 = $_POST['variant_2'];
+        $variant_3 = $_POST['variant_3'];
         $answer = $_POST['answer'];
 
 
-        if (isset($question)&& isset($variant_1)&& isset($variant_2)&& isset($answer)
-            && !empty($question)&& !empty($variant_1)&& !empty($variant_2)&& !empty($answer)){
+        if (isset($question)&& isset($variant_1)&& isset($variant_2)&& isset($variant_3)&& isset($answer)
+            && !empty($question)&& !empty($variant_1)&& !empty($variant_2)&& !empty($variant_3)&& !empty($answer)){
 
-            $stmt = self::$_db->prepare("INSERT INTO question (question, variant_1, variant_2, answer)
-                                        VALUES (:question, :variant_1, :variant_2, :answer)");
+            $stmt = self::$_db->prepare("INSERT INTO question (question, variant_1, variant_2,variant_3, answer)
+                                        VALUES (:question, :variant_1, :variant_2,:variant_3, :answer)");
 
             $stmt->bindParam(':question', $question);
             $stmt->bindParam(':variant_1', $variant_1);
             $stmt->bindParam(':variant_2', $variant_2);
+            $stmt->bindParam(':variant_3', $variant_3);
             $stmt->bindParam(':answer', $answer);
             $stmt->execute();
             $lastid = self::$_db->lastInsertId();
@@ -113,22 +113,28 @@ class Model {
         return true;
     }
 
+    /*Редактирование и перезаписывание в базе строки*/
     function post_update(){
         $question = $_POST['question_update'];
         $variant_1 = $_POST['variant_1_update'];
         $variant_2 = $_POST['variant_2_update'];
+        $variant_3 = $_POST['variant_3_update'];
         $answer = $_POST['answer_update'];
         $id = $_POST['id_update'];
+        $id_updated = (int) $_POST['id_updated'];
 
-        if (isset($id) && !empty($id) && isset($question) && isset($variant_1) && isset($variant_2) && isset($answer)&&
-            !empty($question) && !empty($variant_1) && !empty($variant_2) && !empty($answer)) {
-                $stmt_update = self::$_db->prepare("UPDATE question set id = :id, question = :question, variant_1 = :variant_1,  variant_2 = :variant_2,
-                                                   answer = :answer   where id ='$id'");
+
+        if (isset($id_updated) && !empty($id_updated) && isset($id) && !empty($id) && isset($question) && isset($variant_1)
+            && isset($variant_2) && isset($variant_3) && isset($answer)&& !empty($question) && !empty($variant_1)
+            && !empty($variant_2) && !empty($variant_3) && !empty($answer)) {
+                $stmt_update = self::$_db->prepare("UPDATE question set id = :id_updated, question = :question, variant_1 = :variant_1,  variant_2 = :variant_2,
+                                                   variant_3 = :variant_3, answer = :answer   where id ='$id'");
                 $stmt_update->bindParam(':question', $question);
                 $stmt_update->bindParam(':variant_1', $variant_1);
                 $stmt_update->bindParam(':variant_2', $variant_2);
+                $stmt_update->bindParam(':variant_3', $variant_3);
                 $stmt_update->bindParam(':answer', $answer);
-                $stmt_update->bindParam(':id', $id);
+                $stmt_update->bindParam(':id_updated', $id_updated);
                 $stmt_update->execute();
         }
         return true;

@@ -59,13 +59,14 @@ if ($exit=="exit"){
                                     <a href='modal_update_post.php' class='various_button_post_select fancybox.ajax'>~Редактировать</a>
                                     <a href='#' class='button_del_post'>-Удалить</a>
                                     </div>
-                                    <form class='form_question' action='connect_bd.php' name='table' method='POST'>
+                                    <form class='form_question' action='model.php' name='table' method='POST'>
                                      <table>
                                          <thead>
                                          <th>№</th>
                                          <th>Вопрос</th>
                                          <th>Первый вариант ответа</th>
                                          <th>Второй вариант ответа</th>
+                                         <th>Третий вариант ответа</th>
                                          <th>Правильный ответ</th>
                                          <th>Выделить</th>
                                          </thead>
@@ -77,6 +78,7 @@ if ($exit=="exit"){
                                                  <td><?=$row['question'];?></td>
                                                  <td><?=$row['variant_1'];?></td>
                                                  <td><?=$row['variant_2'];?></td>
+                                                 <td><?=$row['variant_3'];?></td>
                                                  <td><?=$row['answer'];?></td>
                                                  <td><center><input type='checkbox' name='check[]' value='<?=$row['id'];?>'></center></td>
                                              </tr>

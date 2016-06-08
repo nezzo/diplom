@@ -72,7 +72,8 @@ $(document).ready(function() {
                             question: "<h3>" + data[i].question + "</h3>",
                             answers: [
                                 "" + data[i].variant_1 + "",
-                                "" + data[i].variant_1 + "",
+                                "" + data[i].variant_2 + "",
+                                "" + data[i].variant_3 + "",
                                 "" + data[i].answer + ""
                             ],
                             correct: [3]
@@ -147,7 +148,7 @@ $(document).ready(function() {
                    pass:pass
                   },
             success:function(data){
-                console.log(data);
+               // console.log(data);
                 if(data == "ok"){
                     document.location.href='admin.php';
                 }else{
@@ -189,9 +190,10 @@ $(document).ready(function() {
             var question = $('.new_post_question').val();
             var variant_1 = $('.new_post_variant_1').val();
             var variant_2 = $('.new_post_variant_2').val();
+            var variant_3 = $('.new_post_variant_3').val();
             var answer = $('.new_post_answer').val();
 
-            if( question !="" && variant_1!="" && variant_2!=""&& answer!=""){
+            if( question !="" && variant_1!="" && variant_2!="" && variant_3!="" && answer!=""){
                 $.ajax({
                     url : 'model.php',
                     type : 'POST',
@@ -199,13 +201,14 @@ $(document).ready(function() {
                     data :{question:question,
                         variant_1:variant_1,
                         variant_2:variant_2,
+                        variant_3:variant_3,
                         answer:answer
                     },
                     success:function(data){
 
-
+                        console.log(data);
                         $('.form_question table').append('<tr id=tr_'+data+'><center><td>'+data+'</td></center><td>'+question+'</td><td>'+variant_1+'</td>' +
-                            '<td>'+variant_2+'</td><td>'+answer+'</td>' +
+                            '<td>'+variant_2+'</td><td>'+variant_3+'</td><td>'+answer+'</td>' +
                             '<td><center><input type="checkbox" name="[check[]" value='+data+'></center></td></tr>'
                         );
                         $.fancybox.close();
@@ -227,7 +230,7 @@ $(document).ready(function() {
         $('.various_button_post_select').click(function(e){
             e.preventDefault();
             var id = $( "input:checked" ).val();
-            console.log(id);
+           // console.log(id);
 
                 $.ajax({
                     url : 'model.php',
@@ -236,9 +239,11 @@ $(document).ready(function() {
                     data :{id_select:id},
                     success:function(data){
                         setTimeout(function() {
+                            $('.update_post_id').val(data.id);
                             $('.update_post_question').val(data.question);
                             $('.update_post_variant_1').val(data.variant_1);
                             $('.update_post_variant_2').val(data.variant_2);
+                            $('.update_post_variant_3').val(data.variant_3);
                             $('.update_post_answer').val(data.answer);
                         }, 100);
                     },
@@ -251,13 +256,15 @@ $(document).ready(function() {
         /*Редактируем  строку и отправляем назад в базу для обновления строки*/
         $('.update_post_button').click(function(e) {
             e.preventDefault();
+            var id_update = $('.update_post_id').val();
             var question = $('.update_post_question').val();
             var variant_1 = $('.update_post_variant_1').val();
             var variant_2 = $('.update_post_variant_2').val();
+            var variant_3 = $('.update_post_variant_3').val();
             var answer = $('.update_post_answer').val();
             var id = $("input:checked").val();
 
-            if( question !="" && variant_1!="" && variant_2!=""&& answer!="") {
+            if( question !="" && variant_1!="" && variant_2!="" && variant_3!="" && answer!="") {
                $.ajax({
                     url: 'model.php',
                     type: 'POST',
@@ -266,12 +273,14 @@ $(document).ready(function() {
                         question_update: question,
                         variant_1_update: variant_1,
                         variant_2_update: variant_2,
+                        variant_3_update: variant_3,
                         answer_update: answer,
-                        id_update: id
+                        id_update: id,
+                        id_updated:id_update
                     },
                     success: function (data) {
-                        $("#tr_" + id + "").replaceWith("<tr id=tr_" + id + "><center><td>" + id + "</td></center><td>" + question + "</td><td>" + variant_1 + "</td>" +
-                            "<td>" + variant_2 + "</td><td>" + answer + "</td>" +
+                        $("#tr_" + id + "").replaceWith("<tr id=tr_" + id + "><center><td>" + id_update + "</td></center><td>" + question + "</td><td>" + variant_1 + "</td>" +
+                            "<td>" + variant_2 + "</td><td>" + variant_3 + "</td><td>" + answer + "</td>" +
                             "<td><center><input type='checkbox' name='[check[]' value=" + id + "></center></td></tr>"
                         );
                         $.fancybox.close();
