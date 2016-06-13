@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+
+
     /*Вызов модального окна*/
     $(".various_student").fancybox({
         maxWidth	: 380,
@@ -187,11 +189,21 @@ $(document).ready(function() {
         /*Добавляем  новый вопрос-ответ в базу*/
         $('.new_post_button').click(function(e) {
             e.preventDefault();
-            var question = $('.new_post_question').val();
-            var variant_1 = $('.new_post_variant_1').val();
-            var variant_2 = $('.new_post_variant_2').val();
-            var variant_3 = $('.new_post_variant_3').val();
-            var answer = $('.new_post_answer').val();
+
+            var question = tinyMCE.get('question').getContent();
+            var variant_1 = tinyMCE.get('variant_1').getContent();
+            var variant_2 = tinyMCE.get('variant_2').getContent();
+            var variant_3 = tinyMCE.get('variant_3').getContent();
+            var answer = tinyMCE.get('answer').getContent();
+
+            console.log(question);
+            console.log(variant_1);
+            console.log(variant_2);
+            console.log(variant_3);
+            console.log(answer);
+
+
+
 
             if( question !="" && variant_1!="" && variant_2!="" && variant_3!="" && answer!=""){
                 $.ajax({
@@ -205,8 +217,8 @@ $(document).ready(function() {
                         answer:answer
                     },
                     success:function(data){
+                      //  console.log(data);
 
-                        console.log(data);
                         $('.form_question table').append('<tr id=tr_'+data+'><center><td>'+data+'</td></center><td>'+question+'</td><td>'+variant_1+'</td>' +
                             '<td>'+variant_2+'</td><td>'+variant_3+'</td><td>'+answer+'</td>' +
                             '<td><center><input type="checkbox" name="[check[]" value='+data+'></center></td></tr>'
@@ -256,15 +268,17 @@ $(document).ready(function() {
         /*Редактируем  строку и отправляем назад в базу для обновления строки*/
         $('.update_post_button').click(function(e) {
             e.preventDefault();
-            var id_update = $('.update_post_id').val();
-            var question = $('.update_post_question').val();
-            var variant_1 = $('.update_post_variant_1').val();
-            var variant_2 = $('.update_post_variant_2').val();
-            var variant_3 = $('.update_post_variant_3').val();
-            var answer = $('.update_post_answer').val();
+            var id_update = tinyMCE.get('id').getContent();
+            var question = tinyMCE.get('question').getContent();
+            var variant_1 = tinyMCE.get('variant_1').getContent();
+            var variant_2 = tinyMCE.get('variant_2').getContent();
+            var variant_3 = tinyMCE.get('variant_3').getContent();
+            var answer = tinyMCE.get('answer').getContent();
             var id = $("input:checked").val();
+            console.log(question);
 
             if( question !="" && variant_1!="" && variant_2!="" && variant_3!="" && answer!="") {
+                console.log(11);
                $.ajax({
                     url: 'model.php',
                     type: 'POST',

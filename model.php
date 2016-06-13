@@ -1,8 +1,8 @@
 <?php
-/*
+
 ini_set('display_errors',1);
 error_reporting(E_ALL ^E_NOTICE);
-*/
+
 
 class Model {
 
@@ -68,6 +68,7 @@ class Model {
         return true;
     }
 
+    /*Функция которая добавляет новый вопрос и ответ*/
     function new_post(){
         $question = $_POST['question'];
         $variant_1 = $_POST['variant_1'];
