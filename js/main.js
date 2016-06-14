@@ -38,9 +38,6 @@ $(document).ready(function() {
         closeEffect	: 'none'
     });
 
-    /*
-    * НАДО ОРГАНИЗОВАТЬ ЗАПИСЬ В БД ОЦЕНКУ СТУДЕНТА  И ЕЩЕ КРИВО РАБОТАЕТ СТИЛЬ ПО ТЕСТУ В index.html ВСЕ КРАСИВО У МЕНЯ НЕТ
-    * */
     //получаем и отправляем данные о результате в базу (функция отвечает за тестирование) и выводим вопросы на главную
     $('.button_student').on('click', function(event) {
         event.preventDefault();
@@ -142,6 +139,7 @@ $(document).ready(function() {
 
         var login = $('.login_input').val();
         var pass = $('.pass_input').val();
+
         $.ajax({
             url : 'session.php',
             type : 'POST',
@@ -150,7 +148,6 @@ $(document).ready(function() {
                    pass:pass
                   },
             success:function(data){
-               // console.log(data);
                 if(data == "ok"){
                     document.location.href='admin.php';
                 }else{
@@ -268,17 +265,16 @@ $(document).ready(function() {
         /*Редактируем  строку и отправляем назад в базу для обновления строки*/
         $('.update_post_button').click(function(e) {
             e.preventDefault();
-            var id_update = tinyMCE.get('id').getContent();
+
+            var id_update = $(".update_post_id").val();
             var question = tinyMCE.get('question').getContent();
             var variant_1 = tinyMCE.get('variant_1').getContent();
             var variant_2 = tinyMCE.get('variant_2').getContent();
             var variant_3 = tinyMCE.get('variant_3').getContent();
-            var answer = tinyMCE.get('answer').getContent();
+           var answer = tinyMCE.get('answer').getContent();
             var id = $("input:checked").val();
-            console.log(question);
 
             if( question !="" && variant_1!="" && variant_2!="" && variant_3!="" && answer!="") {
-                console.log(11);
                $.ajax({
                     url: 'model.php',
                     type: 'POST',
@@ -293,6 +289,7 @@ $(document).ready(function() {
                         id_updated:id_update
                     },
                     success: function (data) {
+                        console.log(data);
                         $("#tr_" + id + "").replaceWith("<tr id=tr_" + id + "><center><td>" + id_update + "</td></center><td>" + question + "</td><td>" + variant_1 + "</td>" +
                             "<td>" + variant_2 + "</td><td>" + variant_3 + "</td><td>" + answer + "</td>" +
                             "<td><center><input type='checkbox' name='[check[]' value=" + id + "></center></td></tr>"
@@ -308,6 +305,7 @@ $(document).ready(function() {
             }
 
         });
+
 
     /*Функция по выходу с админки*/
     $('.pr').click(function(){

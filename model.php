@@ -91,7 +91,7 @@ class Model {
             $stmt->execute();
             $lastid = self::$_db->lastInsertId();
 
-                echo"$lastid";
+               echo"$lastid";
         }
 
         return  true;
@@ -123,11 +123,10 @@ class Model {
         $answer = $_POST['answer_update'];
         $id = $_POST['id_update'];
         $id_updated = (int) $_POST['id_updated'];
-
-
-        if (isset($id_updated) && !empty($id_updated) && isset($id) && !empty($id) && isset($question) && isset($variant_1)
+    if (isset($id_updated) && !empty($id_updated) && isset($id) && !empty($id) && isset($question) && isset($variant_1)
             && isset($variant_2) && isset($variant_3) && isset($answer)&& !empty($question) && !empty($variant_1)
             && !empty($variant_2) && !empty($variant_3) && !empty($answer)) {
+
                 $stmt_update = self::$_db->prepare("UPDATE question set id = :id_updated, question = :question, variant_1 = :variant_1,  variant_2 = :variant_2,
                                                    variant_3 = :variant_3, answer = :answer   where id ='$id'");
                 $stmt_update->bindParam(':question', $question);

@@ -15,15 +15,15 @@
     <label>Номер вопроса</label><br/>
     <input name="id" class="update_post_id" size="42" maxlength="42" type="text" placeholder="Номер вопроса"><br/>
     <label style="padding-top:25px;">Введите вопрос</label>
-    <textarea class="update_post_question" rows="4" cols="100" name="question" placeholder="Введите вопрос"></textarea>
+    <textarea class="update_post_question" rows="4" cols="100" name="question" ></textarea>
     <label style="padding-top:25px;">Первый вариант ответа</label>
-    <textarea class="update_post_variant_1" rows="4" cols="100" name="variant_1" placeholder="Первый вариант ответа"></textarea>
+    <textarea class="update_post_variant_1" rows="4" cols="100" name="variant_1" ></textarea>
     <label style="padding-top:25px;">Второй вариант ответа</label>
-    <textarea class="update_post_variant_2" rows="4" cols="100" name="variant_2" placeholder="Второй вариант ответа"></textarea>
+    <textarea class="update_post_variant_2" rows="4" cols="100" name="variant_2" ></textarea>
     <label style="padding-top:25px;">Третий вариант ответа</label>
-    <textarea class="update_post_variant_3" rows="4" cols="100" name="variant_3" placeholder="Третий вариант ответа"></textarea>
+    <textarea class="update_post_variant_3" rows="4" cols="100" name="variant_3"></textarea>
     <label style="padding-top:25px;">Правильный вариант ответа</label>
-    <textarea class="update_post_answer" rows="4" cols="100" name="answer" placeholder="Правильный вариант ответа"></textarea>
+    <textarea class="update_post_answer" rows="4" cols="100" name="answer" ></textarea>
     <button class="update_post_button">Сохранить</button>
 </form>
 <script src="js/main.js"></script>

@@ -95,3 +95,12 @@ button.button_admin {
     position: absolute;
     left: 20px;
 }
+#jQuizler table {
+    border: 1px solid black;
+}
+
+#jQuizler td {
+    background: white;
+    border: 1px solid black;
+    padding: 5px;
+}
